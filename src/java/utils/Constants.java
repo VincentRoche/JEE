@@ -21,6 +21,7 @@ public class Constants {
     public static final String PWD_FIELD = "pwdField";
     
     public static final String ERROR_LOGIN_EMPTY = "You must enter values in both fields";
+    public static final String ERROR_LOGIN_FAILED = "Connection failed! Verify your login/password and try again.";
 
     public static final String INDEX_PAGE = "WEB-INF/login.jsp";
     public static final String WELCOME_PAGE = "WEB-INF/welcome.jsp";

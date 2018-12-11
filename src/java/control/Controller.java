@@ -64,6 +64,7 @@ public class Controller extends HttpServlet {
                 request.getRequestDispatcher(Constants.INDEX_PAGE).forward(request, response);
             }
             else {
+                boolean ok = false;
                 for (Credentials u : listUsers) {
 
                     if ((loginEntered.equals(u.getLogin())) && pwdEntered.equals(u.getPassword())) {
@@ -74,7 +75,13 @@ public class Controller extends HttpServlet {
                         session.setAttribute("employeesList", listEmployees);
 
                         request.getRequestDispatcher(Constants.WELCOME_PAGE).forward(request, response);
+                        ok = true;
+                        break;
                     }
+                }
+                if (!ok) {
+                    request.setAttribute("loginError", Constants.ERROR_LOGIN_FAILED);
+                    request.getRequestDispatcher(Constants.INDEX_PAGE).forward(request, response);
                 }
             }
         } else {
