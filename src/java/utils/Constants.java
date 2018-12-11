@@ -25,4 +25,5 @@ public class Constants {
 
     public static final String INDEX_PAGE = "WEB-INF/login.jsp";
     public static final String WELCOME_PAGE = "WEB-INF/welcome.jsp";
+    public static final String FORM_DETAILS_PAGE = "WEB-INF/formDetails.jsp";
 }

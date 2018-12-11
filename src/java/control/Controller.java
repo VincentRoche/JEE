@@ -75,6 +75,7 @@ public class Controller extends HttpServlet {
                         session.setAttribute("employeesList", listEmployees);
 
                         request.getRequestDispatcher(Constants.WELCOME_PAGE).forward(request, response);
+                        
                         ok = true;
                         break;
                     }
