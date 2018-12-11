@@ -11,13 +11,14 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
         <title>Employees(JPA) - Welcome</title>
     </head>
     <body>
-        <h1> My JPA Employees</h1>
+        <h1>List of Employees</h1>
         <form action="">
 
-            <table border = 1>
+            <table class="table table-striped">
 
                 <tr>
                     <td><b>Detail</b></td>
@@ -48,9 +49,9 @@
                 </c:forEach>
             </table>
             
-            <input type='submit' name="action" value="Delete"/>
-            <input type='submit' name="action" value="Details"/>
-            <input type='submit' name="action" value="Add"/>
+            <input type='submit' name="action" value="Delete" class="btn btn-danger"/>
+            <input type='submit' name="action" value="Details" class="btn btn-info"/>
+            <input type='submit' name="action" value="Add" class="btn btn-primary"/>
             
         </form>
 
