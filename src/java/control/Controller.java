@@ -17,6 +17,7 @@ import jee.model.Credentials;
 import jee.model.DataAccess;
 import jee.model.Employees;
 import jee.model.EmployeesSessionBean;
+import jee.model.User;
 import utils.Constants;
 
 /**
@@ -57,6 +58,8 @@ public class Controller extends HttpServlet {
         String loginEntered = request.getParameter(Constants.LOGIN_FIELD);
         String pwdEntered = request.getParameter(Constants.PWD_FIELD);
 
+        User user = null;
+        
         //Compare credentials only if the user has entered something
         if (loginEntered != null && pwdEntered != null) {
             if (loginEntered.isEmpty() || pwdEntered.isEmpty()) {
@@ -68,6 +71,14 @@ public class Controller extends HttpServlet {
                 for (Credentials u : listUsers) {
 
                     if ((loginEntered.equals(u.getLogin())) && pwdEntered.equals(u.getPassword())) {
+                        // create the user
+                        user = new User();
+                        user.setLogin(loginEntered);
+                        user.setPwd(pwdEntered);
+                        
+                        // add it to the session
+                        session.setAttribute("user", user);
+                        
                         listEmployees = new ArrayList<>();
                         listEmployees.addAll(employeesSessionBean.getEmployees());
 
@@ -75,6 +86,8 @@ public class Controller extends HttpServlet {
                         session.setAttribute("employeesList", listEmployees);
 
                         request.getRequestDispatcher(Constants.WELCOME_PAGE).forward(request, response);
+                        
+                        
                         
                         ok = true;
                         break;
@@ -85,9 +98,30 @@ public class Controller extends HttpServlet {
                     request.getRequestDispatcher(Constants.INDEX_PAGE).forward(request, response);
                 }
             }
-        } else {
+        }
+        
+        if(user == null){ 
             request.getRequestDispatcher(Constants.INDEX_PAGE).forward(request, response);
         }
+        else{   // connected and on welcome page maybe (or on add)
+            String action = request.getParameter("Controller");
+            
+            if (null == action) {
+                //no button has been selected
+            } else switch (action) {
+            //delete button was pressed
+                case "delete":
+                    break;
+            //update button was pressed
+                case "update":
+                    break;
+            //someone has altered the HTML and sent a different value!
+                default:
+                    break;
+            }
+        }
+        
+        //TODO : when users disconnects nee to delete "user" in the session
 
     }
 
