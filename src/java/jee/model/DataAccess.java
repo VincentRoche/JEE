@@ -95,6 +95,11 @@ public class DataAccess {
         return output;
 
     }
+    
+    public void deleteEmployees(int emplId){
+        // TODO : delete the empl from the db
+        
+    }
 
     public ArrayList getUsers(ResultSet rs) {
             usersList = new ArrayList<>();
@@ -110,5 +115,5 @@ public class DataAccess {
         }
         return usersList;
     }
-
+    
 }
