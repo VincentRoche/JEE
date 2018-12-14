@@ -96,9 +96,17 @@ public class DataAccess {
 
     }
     
-    public void deleteEmployees(int emplId){
-        // TODO : delete the empl from the db
-        
+    public static void deleteEmployee(int emplId){
+        DataAccess db = new DataAccess();
+        String queryDelete = "DELETE from EMPLOYEES WHERE ID=" + emplId ;
+
+        try {
+            // execute the query
+            db.getStatement(db.getConnection()).executeUpdate(queryDelete);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(DataAccess.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public ArrayList getUsers(ResultSet rs) {

@@ -116,7 +116,12 @@ public class Controller extends HttpServlet {
             //delete button was pressed
                 case "Delete":
                     String radioButton = request.getParameter("radios"); // you get the emplId in the button value
-                    // TODO : delete the empl from the db
+                    //DEBUG:
+                    System.out.print("radioButton:" + radioButton);
+                    DataAccess.deleteEmployee(Integer.parseInt(radioButton));
+                        
+                    // TODO: display the updated list
+                    
                     System.out.print("delete test");
                     break;
             //add button was pressed
