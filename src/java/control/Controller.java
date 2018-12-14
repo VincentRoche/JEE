@@ -59,6 +59,7 @@ public class Controller extends HttpServlet {
         String pwdEntered = request.getParameter(Constants.PWD_FIELD);
 
         User user = null;
+        user = (User)session.getAttribute("user");
         
         //Compare credentials only if the user has entered something
         if (loginEntered != null && pwdEntered != null) {
@@ -101,24 +102,36 @@ public class Controller extends HttpServlet {
         }
         
         if(user == null){ 
+            System.out.print("User null");
             request.getRequestDispatcher(Constants.INDEX_PAGE).forward(request, response);
         }
         else{   // connected and on welcome page maybe (or on add)
-            String action = request.getParameter("Controller");
+            String action = request.getParameter("action");
             
-            if (null == action) {
+            if (action == null) {
                 //no button has been selected
+                System.out.print("no button test");
+                
             } else switch (action) {
             //delete button was pressed
-                case "delete":
+                case "Delete":
+                    System.out.print("delete test");
                     break;
-            //update button was pressed
-                case "update":
+            //add button was pressed
+                case "Add":
+                    System.out.print("update test");
+                    break;
+            //add button was pressed
+                case "Details":
+                    System.out.print("details test");
                     break;
             //someone has altered the HTML and sent a different value!
                 default:
+                    System.out.print("default test");
                     break;
             }
+            
+            request.getRequestDispatcher(Constants.WELCOME_PAGE).forward(request, response);
         }
         
         //TODO : when users disconnects nee to delete "user" in the session

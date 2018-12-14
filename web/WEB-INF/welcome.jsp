@@ -49,9 +49,9 @@
                 </c:forEach>
             </table>
             
-            <input type='submit' name="action" value="Delete" class="btn btn-danger"/>
-            <input type='submit' name="action" value="Details" class="btn btn-info"/>
-            <input type='submit' name="action" value="Add" class="btn btn-primary"/>
+            <input type='submit' name="action" value="Delete" action="Controller" class="btn btn-danger"/>
+            <input type='submit' name="action" value="Details" action="Controller" class="btn btn-info"/>
+            <input type='submit' name="action" value="Add" action="Controller" class="btn btn-primary"/>
             
         </form>
 
