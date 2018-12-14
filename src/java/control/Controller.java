@@ -115,6 +115,8 @@ public class Controller extends HttpServlet {
             } else switch (action) {
             //delete button was pressed
                 case "Delete":
+                    String radioButton = request.getParameter("radios"); // you get the emplId in the button value
+                    // TODO : delete the empl from the db
                     System.out.print("delete test");
                     break;
             //add button was pressed
@@ -134,7 +136,7 @@ public class Controller extends HttpServlet {
             request.getRequestDispatcher(Constants.WELCOME_PAGE).forward(request, response);
         }
         
-        //TODO : when users disconnects nee to delete "user" in the session
+        //TODO : when users disconnects need to delete "user" in the session
 
     }
 
