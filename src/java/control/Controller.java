@@ -119,7 +119,7 @@ public class Controller extends HttpServlet {
                     break;
             //add button was pressed
                 case "Add":
-                    System.out.print("update test");
+                    add(request, response);
                     break;
             //add button was pressed
                 case "Details":
@@ -138,6 +138,11 @@ public class Controller extends HttpServlet {
 
     }
 
+    public void add(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+        request.getRequestDispatcher(Constants.FORM_DETAILS_PAGE).forward(request, response);
+        
+    }
+    
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -176,5 +181,6 @@ public class Controller extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
 
 }
