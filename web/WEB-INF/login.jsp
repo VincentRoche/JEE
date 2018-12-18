@@ -9,16 +9,24 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
         <title>Employees (JPA) - Login page</title>
     </head>
     <body>
-        <c:out value="${loginError}"/>
-        <form name="loginFrm" action="Controller" method="post">
-            Login <input type="text" name="loginField" />
-            <br />
-            Pass <input type="text" name="pwdField" />
-            <br />
-            <input type="submit" name="btnOK" value="Login" />
-        </form>
+        <div class="d-flex justify-content-center">
+            <c:out value="${loginError}"/>
+            <div class="card">
+                <div class="card-header">Login</div>
+                <div class="card-body">
+                    <form name="loginFrm" action="Controller" method="post">
+                        <input type="text" id="loginField" name="loginField" class="form-control" placeholder="Login"/>
+                        <br />
+                        <input type="text" name="pwdField" class="form-control" placeholder="Password"/>
+                        <br />
+                        <input type="submit" name="btnOK" value="Login" class="btn btn-primary" />
+                    </form>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
