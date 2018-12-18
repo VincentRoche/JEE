@@ -96,14 +96,29 @@ public class DataAccess {
 
     }
     
-    public static void deleteEmployee(int emplId){
+    public static Employees addEmployee(String name, String firstName, String homePhone, String mobilePhone, String officePhone, String address, String postalCode, String city, String email)
+    {
+        DataAccess db = new DataAccess();
+        String query = "INSERT INTO EMPLOYEES (NAME, FIRSTNAME, TELHOME, TELMOB, TELPRO, ADRESS, POSTALCODE, CITY, EMAIL) VALUES ('" + name + "', '" + firstName + "', '" + homePhone + "', '" + mobilePhone + "', '" + officePhone + "', '" + address + "', '" + postalCode + "', '" + city + "', '" + email + "')";
+        System.out.println(query);
+        try {
+            // execute the query
+            int id = db.getStatement(db.getConnection()).executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+            // Return object
+            return new Employees(id, name, firstName, homePhone, mobilePhone, officePhone, address, postalCode, city, email);
+        } catch (SQLException ex) {
+            Logger.getLogger(DataAccess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    public static void deleteEmployee(int emplId) {
         DataAccess db = new DataAccess();
         String queryDelete = "DELETE from EMPLOYEES WHERE ID=" + emplId ;
 
         try {
             // execute the query
             db.getStatement(db.getConnection()).executeUpdate(queryDelete);
-            
         } catch (SQLException ex) {
             Logger.getLogger(DataAccess.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -123,6 +138,4 @@ public class DataAccess {
         }
         return usersList;
     }
-
-    // TODO faire le insert pour (Claire)
 }

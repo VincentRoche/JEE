@@ -13,26 +13,26 @@
     </head>
     <body>
         <form name="loginFrm" action="Controller" method="post">
-            Nom <input type="text" name="loginField" />
+            Name <input type="text" name="name" />
             <br />
-            Prénom <input type="text" name="pwdField" />
+            First name <input type="text" name="firstname" />
             <br />
-            Tel Dom <input type="text" name="loginField" />
+            Home phone <input type="text" name="homephone" />
             <br />
-            Tel Mob <input type="text" name="pwdField" />
+            Mobile phone <input type="text" name="mobilephone" />
             <br />
-            Tel Pro <input type="text" name="loginField" />
+            Office phone <input type="text" name="officephone" />
             <br />
-            Adresse <input type="text" name="pwdField" />
+            Address <input type="text" name="address" />
             <br /> 
-            Code postal <input type="text" name="loginField" />
+            Postal code <input type="text" name="postalcode" />
             <br />
-            Ville <input type="text" name="pwdField" />
+            City <input type="text" name="city" />
             <br />    
-            Adresse e-mail <input type="text" name="loginField" />
+            Email <input type="text" name="email" />
             <br />
-            <input type="submit" name="btnSave" value="Save" /> 
-            <input type="submit" name="btnCancel" value="Cancel" />
+            <input type="submit" name="action" value="SaveEmployee" /> 
+            <input type="submit" name="action" value="Cancel" />
         </form>
     </body>
 </html>

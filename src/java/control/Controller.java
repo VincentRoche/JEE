@@ -115,12 +115,17 @@ public class Controller extends HttpServlet {
             } else switch (action) {
             //delete button was pressed
                 case "Delete":
-                    String radioButton = request.getParameter("radios"); // you get the emplId in the button value
+                    int radioButton = Integer.parseInt(request.getParameter("radios")); // you get the emplId in the button value
                     //DEBUG:
                     System.out.print("radioButton:" + radioButton);
-                    DataAccess.deleteEmployee(Integer.parseInt(radioButton));
-                        
-                    // TODO: display the updated list
+                    DataAccess.deleteEmployee(radioButton);
+                    for (Employees e : listEmployees) {
+                        if (e.getId() == radioButton)
+                        {
+                            listEmployees.remove(e);
+                            break;
+                        }
+                    }
                     
                     System.out.print("delete test");
                     break;
@@ -131,6 +136,19 @@ public class Controller extends HttpServlet {
             //add button was pressed
                 case "Details":
                     System.out.print("details test");
+                    break;
+                case "SaveEmployee":
+                    String name = request.getParameter("name");
+                    String firstName = request.getParameter("firstname");
+                    String homePhone = request.getParameter("homephone");
+                    String mobilePhone = request.getParameter("mobilephone");
+                    String officePhone = request.getParameter("officephone");
+                    String address = request.getParameter("address");
+                    String postalCode = request.getParameter("postalcode");
+                    String city = request.getParameter("city");
+                    String email = request.getParameter("email");
+                    Employees e = DataAccess.addEmployee(name, firstName, homePhone, mobilePhone, officePhone, address, postalCode, city, email);
+                    listEmployees.add(e);
                     break;
             //someone has altered the HTML and sent a different value!
                 default:

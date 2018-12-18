@@ -27,7 +27,7 @@
                     <td><b>Home phone</b></td>
                     <td><b>Mobile phone</b></td>
                     <td><b>Office phone</b></td>
-                    <td><b>Adress</b></td>
+                    <td><b>Address</b></td>
                     <td><b>Postal code</b></td>
                     <td><b>City</b></td>
                     <td><b>Email</b></td>
