@@ -35,7 +35,7 @@
                 
                 <c:forEach items="${employeesList}" var="emp">
                     <tr>
-                        <td>  <INPUT TYPE="radio" NAME='radios' VALUE="${empl.id}" CHECKED /></td>
+                        <td>  <INPUT TYPE="radio" NAME='radios' VALUE="${emp.id}" /></td>
                         <td><c:out value="${emp.name}"/></td>
                         <td><c:out value="${emp.firstname}"/></td>
                         <td><c:out value="${emp.telhome}"/></td>

@@ -21,7 +21,7 @@
                     <form name="loginFrm" action="Controller" method="post">
                         <input type="text" id="loginField" name="loginField" class="form-control" placeholder="Login"/>
                         <br />
-                        <input type="text" name="pwdField" class="form-control" placeholder="Password"/>
+                        <input type="password" name="pwdField" class="form-control" placeholder="Password"/>
                         <br />
                         <input type="submit" name="btnOK" value="Login" class="btn btn-primary" />
                     </form>

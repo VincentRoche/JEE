@@ -101,11 +101,11 @@ public class Controller extends HttpServlet {
             }
         }
         
-        if(user == null){ 
+        if (user == null) { 
             System.out.print("User null");
             request.getRequestDispatcher(Constants.INDEX_PAGE).forward(request, response);
         }
-        else{   // connected and on welcome page maybe (or on add)
+        else {   // connected and on welcome page maybe (or on add)
             String action = request.getParameter("action");
             
             if (action == null) {
