@@ -11,8 +11,13 @@ package jee.model;
  */
 public class EmployeeBean {
     
+    
+    private int id;
     private String name;
-    private String firstName;
+    private String firstname;
+    
+    
+    
 
     public String getName() {
         return name;
@@ -22,12 +27,20 @@ public class EmployeeBean {
         this.name = name;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getFirstname() {
+        return firstname;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+    
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
     
 }

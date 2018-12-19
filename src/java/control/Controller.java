@@ -7,18 +7,21 @@ package control;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import jee.model.Credentials;
 import jee.model.DataAccess;
-import jee.model.Employees;
-import jee.model.EmployeesSessionBean;
 import jee.model.User;
 import utils.Constants;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import jee.model.EmployeeBean;
 
 /**
  *
@@ -26,11 +29,11 @@ import utils.Constants;
  */
 public class Controller extends HttpServlet {
 
-    @EJB
-    private EmployeesSessionBean employeesSessionBean;
+    //@EJB
+    //private EmployeesSessionBean employeesSessionBean;
 
-    ArrayList<Employees> listEmployees;
-    ArrayList<Credentials> listUsers;
+    ArrayList<EmployeeBean> listEmployees;
+    ArrayList<User> listUsers;
     DataAccess db;
     String queryEmployees;
     String queryUser;
@@ -49,10 +52,14 @@ public class Controller extends HttpServlet {
 
         //To be able to use the "session" object like we did in the JSPs
         HttpSession session = request.getSession();
+        db = new DataAccess();
+        Connection connection = db.getConnection();
+        Statement statement = db.getStatement(connection);
+        queryUser = "SELECT LOGIN,PASSWORD FROM CREDENTIALS";
+        ResultSet rs = db.getResultSet(statement, queryUser);
+        listUsers = db.getUsers(rs);
 
-        // Credentials retrieved from the database
-        listUsers = new ArrayList<>();
-        listUsers.addAll(employeesSessionBean.getUsers());
+
 
         // User input
         String loginEntered = request.getParameter(Constants.LOGIN_FIELD);
@@ -60,6 +67,7 @@ public class Controller extends HttpServlet {
 
         User user = null;
         user = (User)session.getAttribute("user");
+
         
         //Compare credentials only if the user has entered something
         if (loginEntered != null && pwdEntered != null) {
@@ -69,9 +77,9 @@ public class Controller extends HttpServlet {
             }
             else {
                 boolean ok = false;
-                for (Credentials u : listUsers) {
+                for (User u : listUsers) {
 
-                    if ((loginEntered.equals(u.getLogin())) && pwdEntered.equals(u.getPassword())) {
+                    if ((loginEntered.equals(u.getLogin())) && pwdEntered.equals(u.getPwd())) {
                         // create the user
                         user = new User();
                         user.setLogin(loginEntered);
@@ -80,8 +88,12 @@ public class Controller extends HttpServlet {
                         // add it to the session
                         session.setAttribute("user", user);
                         
-                        listEmployees = new ArrayList<>();
-                        listEmployees.addAll(employeesSessionBean.getEmployees());
+                        /*listEmployees = new ArrayList<>();
+                        listEmployees.addAll(employeesSessionBean.getEmployees());*/
+                        
+                        queryEmployees = "Select ID, NAME, FIRSTNAME from Employees";
+                        ResultSet rs1 = db.getResultSet(statement, queryEmployees);
+                        listEmployees = db.getEmployees(rs1);
 
                         // Store the list of employees in a scope object
                         session.setAttribute("employeesList", listEmployees);
@@ -118,11 +130,11 @@ public class Controller extends HttpServlet {
                     int radioButton = Integer.parseInt(request.getParameter("radios")); // you get the emplId in the button value
                     //DEBUG:
                     System.out.print("radioButton:" + radioButton);
-                    DataAccess.deleteEmployee(radioButton);
-                    for (Employees e : listEmployees) {
+                    db.deleteEmployee(radioButton); // remove from db
+                    for (EmployeeBean e : listEmployees) {
                         if (e.getId() == radioButton)
                         {
-                            listEmployees.remove(e);
+                            listEmployees.remove(e); // remove from current list
                             break;
                         }
                     }
@@ -135,7 +147,24 @@ public class Controller extends HttpServlet {
                     break;
             //add button was pressed
                 case "Details":
+                    int radioButton1 = Integer.parseInt(request.getParameter("radios")); // you get the emplId in the button value
+                   
+                    for (EmployeeBean e : listEmployees) {
+                        if (e.getId() == radioButton1)
+                        {
+                            request.setAttribute("emp", listEmployees.get(e.getId()-1));
+                            request.setAttribute("firstname", listEmployees.get(e.getId()-1));
+                            
+                            break;
+                        }
+                    }
+                    add(request, response);
+                    
+                    
                     System.out.print("details test");
+                    
+                    
+                    
                     break;
                 case "SaveEmployee":
                     String name = request.getParameter("name");
@@ -147,8 +176,12 @@ public class Controller extends HttpServlet {
                     String postalCode = request.getParameter("postalcode");
                     String city = request.getParameter("city");
                     String email = request.getParameter("email");
-                    Employees e = DataAccess.addEmployee(name, firstName, homePhone, mobilePhone, officePhone, address, postalCode, city, email);
-                    listEmployees.add(e);
+                    db.addEmployee(name, firstName, homePhone, mobilePhone, officePhone, address, postalCode, city, email);
+                    
+                    queryEmployees = "Select ID, NAME, FIRSTNAME from Employees";
+                    ResultSet rs1 = db.getResultSet(statement, queryEmployees);
+                    listEmployees = db.getEmployees(rs1);
+                   
                     break;
             //someone has altered the HTML and sent a different value!
                 default:

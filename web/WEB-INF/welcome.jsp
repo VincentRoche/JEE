@@ -38,13 +38,8 @@
                         <td>  <INPUT TYPE="radio" NAME='radios' VALUE="${emp.id}" /></td>
                         <td><c:out value="${emp.name}"/></td>
                         <td><c:out value="${emp.firstname}"/></td>
-                        <td><c:out value="${emp.telhome}"/></td>
-                        <td><c:out value="${emp.telmob}"/></td>
-                        <td><c:out value="${emp.telpro}"/></td>
-                        <td><c:out value="${emp.adress}"/></td>
-                        <td><c:out value="${emp.postalcode}"/></td>
-                        <td><c:out value="${emp.city}"/></td>
-                        <td><c:out value="${emp.email}"/></td>
+                        
+
                     </tr>
                 </c:forEach>
             </table>

@@ -77,8 +77,10 @@ public class DataAccess {
         try {
             while (rs.next()) {
                 EmployeeBean employee = new EmployeeBean();
-                employee.setFirstName(rs.getString("FIRSTNAME"));
+                employee.setId(rs.getInt("ID"));
                 employee.setName(rs.getString("NAME"));
+                employee.setFirstname(rs.getString("FIRSTNAME"));
+                
                 employeesList.add(employee);
             }
         } catch (SQLException ex) {
@@ -90,29 +92,28 @@ public class DataAccess {
     public String showEmployees(ArrayList<EmployeeBean> employeesList) {
         String output = "";
         for (EmployeeBean empl : employeesList) {
-            output = output + empl.getFirstName() + "  -  " + empl.getName() + "<br/>";
+            output = output + empl.getFirstname() + "  -  " + empl.getName() + "<br/>";
         }
         return output;
 
     }
     
-    public static Employees addEmployee(String name, String firstName, String homePhone, String mobilePhone, String officePhone, String address, String postalCode, String city, String email)
+    public  void addEmployee(String name, String firstName, String homePhone, String mobilePhone, String officePhone, String address, String postalCode, String city, String email)
     {
-        DataAccess db = new DataAccess();
         String query = "INSERT INTO EMPLOYEES (NAME, FIRSTNAME, TELHOME, TELMOB, TELPRO, ADRESS, POSTALCODE, CITY, EMAIL) VALUES ('" + name + "', '" + firstName + "', '" + homePhone + "', '" + mobilePhone + "', '" + officePhone + "', '" + address + "', '" + postalCode + "', '" + city + "', '" + email + "')";
         System.out.println(query);
-        try {
-            // execute the query
-            int id = db.getStatement(db.getConnection()).executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
-            // Return object
-            return new Employees(id, name, firstName, homePhone, mobilePhone, officePhone, address, postalCode, city, email);
+            // execute the query 
+         try {
+            stmt.executeUpdate(query);
         } catch (SQLException ex) {
             Logger.getLogger(DataAccess.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;
+           
+           
     }
+
     
-    public static void deleteEmployee(int emplId) {
+    public void deleteEmployee(int emplId) {
         DataAccess db = new DataAccess();
         String queryDelete = "DELETE from EMPLOYEES WHERE ID=" + emplId ;
 
@@ -130,7 +131,7 @@ public class DataAccess {
             while (rs.next()) {
                 User u = new User();
                 u.setLogin(rs.getString("LOGIN"));
-                u.setPwd(rs.getString("PWD"));
+                u.setPwd(rs.getString("PASSWORD"));
                 usersList.add(u);
             }
         } catch (SQLException ex) {
