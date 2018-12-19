@@ -152,8 +152,8 @@ public class Controller extends HttpServlet {
                     for (EmployeeBean e : listEmployees) {
                         if (e.getId() == radioButton1)
                         {
-                            request.setAttribute("emp", listEmployees.get(e.getId()-1));
-                            request.setAttribute("firstname", listEmployees.get(e.getId()-1));
+                            request.setAttribute("emp", e);
+                            request.setAttribute("firstname", e.getFirstname());
                             
                             break;
                         }
