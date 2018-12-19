@@ -181,10 +181,6 @@ public class Controller extends HttpServlet {
                     queryEmployees = "Select ID, NAME, FIRSTNAME from Employees";
                     ResultSet rs1 = db.getResultSet(statement, queryEmployees);
                     listEmployees = db.getEmployees(rs1);
-                    for (EmployeeBean e : listEmployees)
-                    {
-                        System.out.println(e.getName());
-                    }
                    
                     break;
             //someone has altered the HTML and sent a different value!
