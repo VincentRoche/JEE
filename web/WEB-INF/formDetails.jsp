@@ -20,7 +20,7 @@
                 <div class="card-body">
                     <form name="loginFrm" action="Controller" method="post">
                         Name <input type="text" name="name" class="form-control" value="${emp.name}"/>
-                        First name <input type="text" name="firstname" class="form-control"/>
+                        First name <input type="text" name="firstname" class="form-control" value="${emp.firstname}"/>
                         Home phone <input type="text" name="homephone" class="form-control"/>
                         Mobile phone <input type="text" name="mobilephone" class="form-control"/>
                         Office phone <input type="text" name="officephone" class="form-control"/>
