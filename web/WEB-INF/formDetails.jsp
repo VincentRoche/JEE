@@ -19,6 +19,7 @@
                 <div class="card-header">Employee</div>
                 <div class="card-body">
                     <form name="loginFrm" action="Controller" method="post">
+                        <input type="hidden" name="id" class="form-control" value="${emp.id}"/>
                         Name <input type="text" name="name" class="form-control" value="${emp.name}"/>
                         First name <input type="text" name="firstname" class="form-control" value="${emp.firstname}"/>
                         Home phone <input type="text" name="homephone" class="form-control"/>

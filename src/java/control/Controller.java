@@ -153,7 +153,6 @@ public class Controller extends HttpServlet {
                         if (e.getId() == radioButton1)
                         {
                             request.setAttribute("emp", e);
-                            request.setAttribute("firstname", e.getFirstname());
                             
                             break;
                         }
@@ -167,6 +166,7 @@ public class Controller extends HttpServlet {
                     
                     break;
                 case "SaveEmployee":
+                    String id = request.getParameter("id");
                     String name = request.getParameter("name");
                     String firstName = request.getParameter("firstname");
                     String homePhone = request.getParameter("homephone");
@@ -176,7 +176,13 @@ public class Controller extends HttpServlet {
                     String postalCode = request.getParameter("postalcode");
                     String city = request.getParameter("city");
                     String email = request.getParameter("email");
-                    db.addEmployee(name, firstName, homePhone, mobilePhone, officePhone, address, postalCode, city, email);
+                    
+                    if (!id.isEmpty()) {
+                        //TODO Faire l'update
+                    }
+                    else {
+                        db.addEmployee(name, firstName, homePhone, mobilePhone, officePhone, address, postalCode, city, email);
+                    }
                     
                     queryEmployees = "Select ID, NAME, FIRSTNAME from Employees";
                     ResultSet rs1 = db.getResultSet(statement, queryEmployees);
