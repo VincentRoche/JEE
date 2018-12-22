@@ -22,13 +22,13 @@
                         <input type="hidden" name="id" class="form-control" value="${emp.id}"/>
                         Name <input type="text" name="name" class="form-control" value="${emp.name}"/>
                         First name <input type="text" name="firstname" class="form-control" value="${emp.firstname}"/>
-                        Home phone <input type="text" name="homephone" class="form-control"/>
-                        Mobile phone <input type="text" name="mobilephone" class="form-control"/>
-                        Office phone <input type="text" name="officephone" class="form-control"/>
-                        Address <input type="text" name="address" class="form-control"/>
-                        Postal code <input type="text" name="postalcode" class="form-control"/>
-                        City <input type="text" name="city" class="form-control"/>
-                        Email <input type="text" name="email" class="form-control"/>
+                        Home phone <input type="text" name="homephone" class="form-control" value="${emp.telhome}"/>
+                        Mobile phone <input type="text" name="mobilephone" class="form-control" value="${emp.telmob}"/>
+                        Office phone <input type="text" name="officephone" class="form-control" value="${emp.telpro}"/>
+                        Address <input type="text" name="address" class="form-control" value="${emp.address}"/>
+                        Postal code <input type="text" name="postalcode" class="form-control" value="${emp.postalcode}"/>
+                        City <input type="text" name="city" class="form-control" value="${emp.city}"/>
+                        Email <input type="text" name="email" class="form-control" value="${emp.email}"/>
                         <input type="submit" name="action" value="SaveEmployee" class="btn btn-primary"/> 
                         <input type="submit" name="action" value="Cancel" class="btn btn-danger"/>
                     </form>

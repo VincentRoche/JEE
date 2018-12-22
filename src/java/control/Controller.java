@@ -1,8 +1,8 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this license header, choose License Headers in Project Properties.
+* To change this template file, choose Tools | Templates
+* and open the template in the editor.
+*/
 package control;
 
 import java.io.IOException;
@@ -28,16 +28,16 @@ import jee.model.EmployeeBean;
  * @author Jacques
  */
 public class Controller extends HttpServlet {
-
+    
     //@EJB
     //private EmployeesSessionBean employeesSessionBean;
-
+    
     ArrayList<EmployeeBean> listEmployees;
     ArrayList<User> listUsers;
     DataAccess db;
     String queryEmployees;
     String queryUser;
-
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -49,27 +49,28 @@ public class Controller extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        
         //To be able to use the "session" object like we did in the JSPs
         HttpSession session = request.getSession();
         db = new DataAccess();
         Connection connection = db.getConnection();
         Statement statement = db.getStatement(connection);
-        queryUser = "SELECT LOGIN,PASSWORD FROM CREDENTIALS";
+        queryEmployees = "SELECT * FROM EMPLOYEES";
+        queryUser = "SELECT LOGIN, PASSWORD FROM CREDENTIALS";
         ResultSet rs = db.getResultSet(statement, queryUser);
         listUsers = db.getUsers(rs);
-
-
-
+        
+        
+        
         // User input
         String loginEntered = request.getParameter(Constants.LOGIN_FIELD);
         String pwdEntered = request.getParameter(Constants.PWD_FIELD);
-
+        
         User user = null;
         user = (User)session.getAttribute("user");
-
         
-        //Compare credentials only if the user has entered something
+        
+        // Compare credentials only if the user has entered something
         if (loginEntered != null && pwdEntered != null) {
             if (loginEntered.isEmpty() || pwdEntered.isEmpty()) {
                 request.setAttribute("loginError", Constants.ERROR_LOGIN_EMPTY);
@@ -78,7 +79,7 @@ public class Controller extends HttpServlet {
             else {
                 boolean ok = false;
                 for (User u : listUsers) {
-
+                    
                     if ((loginEntered.equals(u.getLogin())) && pwdEntered.equals(u.getPwd())) {
                         // create the user
                         user = new User();
@@ -91,16 +92,7 @@ public class Controller extends HttpServlet {
                         /*listEmployees = new ArrayList<>();
                         listEmployees.addAll(employeesSessionBean.getEmployees());*/
                         
-                        queryEmployees = "Select ID, NAME, FIRSTNAME from Employees";
-                        ResultSet rs1 = db.getResultSet(statement, queryEmployees);
-                        listEmployees = db.getEmployees(rs1);
-
-                        // Store the list of employees in a scope object
-                        session.setAttribute("employeesList", listEmployees);
-
-                        request.getRequestDispatcher(Constants.WELCOME_PAGE).forward(request, response);
-                        
-                        
+                        updateEmployees(statement);
                         
                         ok = true;
                         break;
@@ -113,7 +105,7 @@ public class Controller extends HttpServlet {
             }
         }
         
-        if (user == null) { 
+        if (user == null) {
             System.out.print("User null");
             request.getRequestDispatcher(Constants.INDEX_PAGE).forward(request, response);
         }
@@ -125,30 +117,24 @@ public class Controller extends HttpServlet {
                 System.out.print("no button test");
                 
             } else switch (action) {
-            //delete button was pressed
+                //delete button was pressed
                 case "Delete":
                     int radioButton = Integer.parseInt(request.getParameter("radios")); // you get the emplId in the button value
                     //DEBUG:
                     System.out.print("radioButton:" + radioButton);
                     db.deleteEmployee(radioButton); // remove from db
-                    for (EmployeeBean e : listEmployees) {
-                        if (e.getId() == radioButton)
-                        {
-                            listEmployees.remove(e); // remove from current list
-                            break;
-                        }
-                    }
+                    updateEmployees(statement);
                     
                     System.out.print("delete test");
                     break;
-            //add button was pressed
+                    //add button was pressed
                 case "Add":
                     add(request, response);
                     break;
-            //add button was pressed
+                    //add button was pressed
                 case "Details":
                     int radioButton1 = Integer.parseInt(request.getParameter("radios")); // you get the emplId in the button value
-                   
+                    
                     for (EmployeeBean e : listEmployees) {
                         if (e.getId() == radioButton1)
                         {
@@ -178,18 +164,16 @@ public class Controller extends HttpServlet {
                     String email = request.getParameter("email");
                     
                     if (!id.isEmpty()) {
-                        //TODO Faire l'update
+                        db.updateEmployee(id, name, firstName, homePhone, mobilePhone, officePhone, address, postalCode, city, email);
                     }
                     else {
                         db.addEmployee(name, firstName, homePhone, mobilePhone, officePhone, address, postalCode, city, email);
                     }
                     
-                    queryEmployees = "Select ID, NAME, FIRSTNAME from Employees";
-                    ResultSet rs1 = db.getResultSet(statement, queryEmployees);
-                    listEmployees = db.getEmployees(rs1);
-                   
+                    updateEmployees(statement);
+                    
                     break;
-            //someone has altered the HTML and sent a different value!
+                    //someone has altered the HTML and sent a different value!
                 default:
                     System.out.print("default test");
                     break;
@@ -200,9 +184,14 @@ public class Controller extends HttpServlet {
         }
         
         //TODO : when users disconnects need to delete "user" in the session
-
+        
     }
-
+    
+    public void updateEmployees(Statement statement)
+    {
+        listEmployees = db.getEmployees(db.getResultSet(statement, queryEmployees));
+    }
+    
     public void add(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         request.getRequestDispatcher(Constants.FORM_DETAILS_PAGE).forward(request, response);
         
@@ -222,7 +211,7 @@ public class Controller extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
     }
-
+    
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -236,7 +225,7 @@ public class Controller extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
     }
-
+    
     /**
      * Returns a short description of the servlet.
      *
@@ -246,6 +235,6 @@ public class Controller extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
-
+    
+    
 }
