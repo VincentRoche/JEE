@@ -1,8 +1,3 @@
-/*
-* To change this license header, choose License Headers in Project Properties.
-* To change this template file, choose Tools | Templates
-* and open the template in the editor.
-*/
 package control;
 
 import java.io.IOException;
@@ -17,20 +12,11 @@ import jee.model.User;
 import utils.Constants;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import jee.model.EmployeeBean;
 
-/**
- *
- * @author Jacques
- */
 public class Controller extends HttpServlet {
-    
-    //@EJB
-    //private EmployeesSessionBean employeesSessionBean;
     
     ArrayList<EmployeeBean> listEmployees;
     ArrayList<User> listUsers;
@@ -50,13 +36,13 @@ public class Controller extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        //To be able to use the "session" object like we did in the JSPs
+        // To be able to use the "session" object like we did in the JSPs
         HttpSession session = request.getSession();
         db = new DataAccess();
         Connection connection = db.getConnection();
         Statement statement = db.getStatement(connection);
-        queryEmployees = "SELECT * FROM EMPLOYEES";
-        queryUser = "SELECT LOGIN, PASSWORD FROM CREDENTIALS";
+        queryEmployees = Constants.QUERY_SELECT_EMPLOYEES;
+        queryUser = Constants.QUERY_SELECT_CREDENTIALS;
         ResultSet rs = db.getResultSet(statement, queryUser);
         listUsers = db.getUsers(rs);
         
@@ -66,20 +52,20 @@ public class Controller extends HttpServlet {
         String loginEntered = request.getParameter(Constants.LOGIN_FIELD);
         String pwdEntered = request.getParameter(Constants.PWD_FIELD);
         
-        User user = null;
-        user = (User)session.getAttribute("user");
+        User user = (User) session.getAttribute(Constants.SESSION_USER);
         
-        
-        // Compare credentials only if the user has entered something
+        // Compare credentials only if the user has entered something in the login form
         if (loginEntered != null && pwdEntered != null) {
+            // Error if one of the fields is empty
             if (loginEntered.isEmpty() || pwdEntered.isEmpty()) {
-                request.setAttribute("loginError", Constants.ERROR_LOGIN_EMPTY);
-                request.getRequestDispatcher(Constants.INDEX_PAGE).forward(request, response);
+                request.setAttribute(Constants.REQUEST_LOGIN_ERROR, Constants.ERROR_LOGIN_EMPTY);
+                // Forwarded to index page later
             }
             else {
                 boolean ok = false;
+                // Searching credentials...
                 for (User u : listUsers) {
-                    
+                    // If the credentials are correct
                     if ((loginEntered.equals(u.getLogin())) && pwdEntered.equals(u.getPwd())) {
                         // create the user
                         user = new User();
@@ -87,109 +73,108 @@ public class Controller extends HttpServlet {
                         user.setPwd(pwdEntered);
                         
                         // add it to the session
-                        session.setAttribute("user", user);
-                        
-                        /*listEmployees = new ArrayList<>();
-                        listEmployees.addAll(employeesSessionBean.getEmployees());*/
-                        
-                        updateEmployees(statement);
+                        session.setAttribute(Constants.SESSION_USER, user);
                         
                         ok = true;
                         break;
                     }
                 }
                 if (!ok) {
-                    request.setAttribute("loginError", Constants.ERROR_LOGIN_FAILED);
-                    request.getRequestDispatcher(Constants.INDEX_PAGE).forward(request, response);
+                    // Credentials not found or incorrect
+                    request.setAttribute(Constants.REQUEST_LOGIN_ERROR, Constants.ERROR_LOGIN_FAILED);
+                    // Forwarded to index page later
                 }
             }
         }
         
         if (user == null) {
-            System.out.print("User null");
+            // User redirected to login page if they are not logged in
             request.getRequestDispatcher(Constants.INDEX_PAGE).forward(request, response);
         }
-        else {   // connected and on welcome page maybe (or on add)
-            String action = request.getParameter("action");
+        else // If the user is logged in
+        {
+            // User connected and on welcome page maybe (or on details)
             
-            if (action == null) {
-                //no button has been selected
-                System.out.print("no button test");
+            String action = request.getParameter(Constants.REQUEST_ACTION);
+            boolean forwarded = false; // If false at the end, the welcome page will be displayed
+            
+            // If a form button was pressed
+            if (action != null) switch (action) {
                 
-            } else switch (action) {
                 //delete button was pressed
-                case "Delete":
-                    int radioButton = Integer.parseInt(request.getParameter("radios")); // you get the emplId in the button value
-                    //DEBUG:
-                    System.out.print("radioButton:" + radioButton);
+                case Constants.ACTION_DELETE:
+                    int radioButton = Integer.parseInt(request.getParameter(Constants.REQUEST_RADIOS)); // you get the emplId in the button value
                     db.deleteEmployee(radioButton); // remove from db
-                    updateEmployees(statement);
+                    break;
                     
-                    System.out.print("delete test");
-                    break;
                     //add button was pressed
-                case "Add":
+                case Constants.ACTION_ADD:
                     add(request, response);
+                    forwarded = true;
                     break;
-                    //add button was pressed
-                case "Details":
-                    int radioButton1 = Integer.parseInt(request.getParameter("radios")); // you get the emplId in the button value
+                    
+                    //details button was pressed
+                case Constants.ACTION_DETAILS:
+                    int radioButton1 = Integer.parseInt(request.getParameter(Constants.REQUEST_RADIOS)); // you get the emplId in the button value
                     
                     for (EmployeeBean e : listEmployees) {
                         if (e.getId() == radioButton1)
                         {
-                            request.setAttribute("emp", e);
+                            request.setAttribute(Constants.REQUEST_EMPLOYEE, e);
                             
                             break;
                         }
                     }
                     add(request, response);
-                    
-                    
-                    System.out.print("details test");
-                    
-                    
-                    
+                    forwarded = true;
                     break;
-                case "SaveEmployee":
-                    String id = request.getParameter("id");
-                    String name = request.getParameter("name");
-                    String firstName = request.getParameter("firstname");
-                    String homePhone = request.getParameter("homephone");
-                    String mobilePhone = request.getParameter("mobilephone");
-                    String officePhone = request.getParameter("officephone");
-                    String address = request.getParameter("address");
-                    String postalCode = request.getParameter("postalcode");
-                    String city = request.getParameter("city");
-                    String email = request.getParameter("email");
                     
+                    //save button was pressed in the details page
+                case Constants.ACTION_SAVE:
+                    // Get form values
+                    String id = request.getParameter(Constants.REQUEST_ID);
+                    String name = request.getParameter(Constants.REQUEST_NAME);
+                    String firstName = request.getParameter(Constants.REQUEST_FIRSTNAME);
+                    String homePhone = request.getParameter(Constants.REQUEST_HOMEPHONE);
+                    String mobilePhone = request.getParameter(Constants.REQUEST_MOBILEPHONE);
+                    String officePhone = request.getParameter(Constants.REQUEST_OFFICEPHONE);
+                    String address = request.getParameter(Constants.REQUEST_ADDRESS);
+                    String postalCode = request.getParameter(Constants.REQUEST_POSTALCODE);
+                    String city = request.getParameter(Constants.REQUEST_CITY);
+                    String email = request.getParameter(Constants.REQUEST_EMAIL);
+                    
+                    // If it is an update of an existing employee
                     if (!id.isEmpty()) {
                         db.updateEmployee(id, name, firstName, homePhone, mobilePhone, officePhone, address, postalCode, city, email);
                     }
+                    // If it is a new employee
                     else {
                         db.addEmployee(name, firstName, homePhone, mobilePhone, officePhone, address, postalCode, city, email);
                     }
                     
-                    updateEmployees(statement);
                     
                     break;
+                    
+                    //logout link was pressed
+                case Constants.ACTION_LOGOUT:
+                    session.removeAttribute(Constants.SESSION_USER); // Deleting user session
+                    request.getRequestDispatcher(Constants.GOODBYE_PAGE).forward(request, response);
+                    forwarded = true;
+                    
+                    break;
+                    
                     //someone has altered the HTML and sent a different value!
                 default:
-                    System.out.print("default test");
                     break;
             }
             
-            session.setAttribute("employeesList", listEmployees);
-            request.getRequestDispatcher(Constants.WELCOME_PAGE).forward(request, response);
+            // If the user has not been forwarded yet, we display the welcome page (employee list)
+            if (!forwarded) {
+                listEmployees = db.getEmployees(db.getResultSet(statement, queryEmployees)); // Updating employee list
+                request.setAttribute(Constants.REQUEST_EMPLOYEELIST, listEmployees);
+                request.getRequestDispatcher(Constants.WELCOME_PAGE).forward(request, response);
+            }
         }
-        
-        //TODO : when users disconnects need to delete "user" in the session
-        
-    }
-    
-    public void updateEmployees(Statement statement)
-    {
-        listEmployees = db.getEmployees(db.getResultSet(statement, queryEmployees));
     }
     
     public void add(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
