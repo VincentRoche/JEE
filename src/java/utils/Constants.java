@@ -2,7 +2,7 @@ package utils;
 
 public class Constants {
 
-    //Constantes related to the properties file
+    //Constants related to the properties file
     public static final String PATH_PROPERTIES_FILE = "utils/db.properties";
     public static final String DB_URL = "dbUrl";
     public static final String DB_USER = "dbUser";
