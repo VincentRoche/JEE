@@ -22,7 +22,7 @@ Guillaume Billès | Guillaume Farge | Morgan Wolf | Vincent Roche | Claire Huang
 2) A click on Cancel will redirect to the list page without updating information about the current member<br>
 
 <b>General functionalities</b>
-On the upper right of each page (except the login page obviously) show: <br>
+<br>On the upper right of each page (except the login page obviously) show: <br>
 1) "Your session is active" <br>
 2) The icon that allows the user to logout (leave the session)<br>
 <br>
