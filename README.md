@@ -26,15 +26,16 @@ Guillaume Billès | Guillaume Farge | Morgan Wolf | Vincent Roche | Claire Huang
 1) "Your session is active" <br>
 2) The icon that allows the user to logout (leave the session)<br>
 <br>
-1) Good bye page<br>
-2) Constants are in the utils folder, in the file Constants.java<br>
-3) Our database if configured as <br>
+
+1. Good bye page<br>
+2. Constants are in the utils folder, in the file Constants.java<br>
+3. Our database if configured as <br>
 Base : PROJET<br>
 User : adm<br>
 Password : adm<br>
 4) We have a script with 10 employees<br>
 
-<h1>Version 1 (this one)</h1>
+<h1>Version 1 (https://github.com/VincentRoche/JEE)</h1>
 <h2>How to launch Version 1?</h2>
 After cloning the project from this address : https://github.com/VincentRoche/JEE.git<br>
 Step 1 : Create a JavaDB database (name=PROJET, username=adm, password=adm)<br>
@@ -58,7 +59,7 @@ In this version, the database used is JavaDB from NetBeans
 db.properties file is located in the src/java/utils folder<br>
 
 
-<h1>Version 2 (https://github.com/ClaireH97/JEE2)</h1>
+<h1>Version 2 (this one)</h1>
 <h2>How to launch Version 2?</h2>
 After cloning the project from this address : https://github.com/ClaireH97/JEE2.git<br>
 Step 1 : create a MySQL database named "PROJET"<br>
